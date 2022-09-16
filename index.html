@@ -74,18 +74,29 @@
     </div>
     <div class="hide" id="coffeeSelectionMenu"></div>
     <div class="hide" id="customerOrderMenu">
-      <table id="customerOrder">
-        <tr>
-          <th>Coffee</th>
-          <th>Size</th>
-          <th>Cost</th>
-        </tr>
-      </table>
+      <div id="customerDetailsContainer">
+        <h2>Customer Details</h2>
+      </div>
+      <div id="orderContainer">
+        <h2>Order Details</h2>
+        <table id="customerOrder"></table>
+      </div>
+      <button
+        type="button"
+        onclick="changePage('customerOrderMenu','coffeeSelectionMenu')">
+        Select Coffees
+      </button>
       <button
         type="button"
         onclick="changePage('customerOrderMenu','mainMenu')"
         class="cancelOrder">
         Cancel Order
+      </button>
+      <button
+        type="button"
+        onclick="changePage('customerOrderMenu','mainMenu')"
+        class="cancelOrder">
+        Complete Order
       </button>
     </div>
     <script src="/javascript/main.js"></script>

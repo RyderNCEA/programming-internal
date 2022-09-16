@@ -90,27 +90,46 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         let coffeeButton = document.getElementById(`coffee${i}`);
         let coffeeSize = document.getElementById(`coffee${i}Size`);
         coffeeButton.addEventListener("click", function (e) {
-            let coffeeAmountIndicator = document.getElementById("coffeeAmountIndicator");
-            if (orderAmount == 1) {
-                coffeeAmountIndicator.innerHTML = 'You have selected the entitled coffee order amount.';
-                return;
-            }
             e.preventDefault();
+            let coffeeAmountIndicator = document.getElementById("coffeeAmountIndicator");
+            if (orderAmount == 0) { return }
+            orderAmount -= 1;
+            if (orderAmount == 0) {
+                coffeeAmountIndicator.innerHTML = 'You have selected the entitled coffee order amount.';
+            }
+            else {
+                coffeeAmountIndicator.innerHTML = `Coffee Amount: ${orderAmount}`;
+            }
             if (coffeeSize.value == "Regular") { order.push([coffeeName, coffeeSize.value, REGULAR]); }
             if (coffeeSize.value == "Medium") { order.push([coffeeName, coffeeSize.value, MEDIUM]); }
             if (coffeeSize.value == "Large") { order.push([coffeeName, coffeeSize.value, LARGE]); }
-            orderAmount -= 1;
-            coffeeAmountIndicator.innerHTML = `Coffee Amount: ${orderAmount}`
         });
     }
 
     // Customer Order Menu Elements
     let viewOrderButton = document.getElementById("viewOrderButton");
-    let customerOrderMenu = document.getElementById("customerOrderMenu");
+    let customerDetailsContainer = document.getElementById("customerDetailsContainer")
 
     // When operator proceeds to view customer order
     viewOrderButton.addEventListener("click", function (e) {
+        // Create variable which stores order cost
+
+        // Displaying the customer details
+        customerDetailsContainer.innerHTML += `<p>Name: ${customerName.value}`;
+        if (customerPhone.value != "") {
+            customerDetailsContainer.innerHTML += `<p>Address: ${customerAddress.value}`;
+            customerDetailsContainer.innerHTML += `<p>Phone Number: ${customerPhone.value}`;
+        }
+
+        // Addition of the customers order to the screen
         let table = document.getElementById("customerOrder");
+        table.innerHTML = "";
+        table.innerHTML += `        
+        <tr>
+        <th>Coffee</th>
+        <th>Size</th>
+        <th>Cost</th>
+        </tr>`
         order.forEach(item => {
             let row = table.insertRow();
             let cell = row.insertCell();
@@ -125,15 +144,46 @@ coffeeSelectionButton.addEventListener("click", function (e) {
             let coffeeSizeOrder = document.getElementById(`coffee${order.indexOf(item)}SizeOrder`);
             coffeeSizeOrder.value = `${item[1]}`;
             cell = row.insertCell();
-            cell.innerHTML = `$${item[2]}`
+            cell.innerHTML = `$${parseFloat(item[2]).toFixed(2)}`;
             cell = row.insertCell();
             cell.innerHTML = `<button class="removeItem" id="removeItem${order.indexOf(item)}">X</button>`;
+            // Remove coffee from the order
             let removeItem = document.getElementById(`removeItem${order.indexOf(item)}`);
-            removeItem.addEventListener("click", function(e){
-                table.deleteRow(`${order.indexOf(item)+1}`);
+            removeItem.addEventListener("click", function (e) {
+                e.preventDefault();
+                table.deleteRow(`${order.indexOf(item) + 1}`);
                 order.splice(order.indexOf(item), 1);
+                orderAmount += 1;
+                coffeeAmountIndicator.innerHTML = `Coffee Amount: ${orderAmount}`;
+            });
+            let sizeAdjustment = document.getElementById(`coffee${order.indexOf(item)}SizeOrder`);
+            // Change size of a coffee in the order
+            sizeAdjustment.addEventListener("change", function (e) {
+                e.preventDefault();
+                order[order.indexOf(item)][1] = e.target.value;
+                if (e.target.value == "Regular") { order[order.indexOf(item)][2] = REGULAR; }
+                if (e.target.value == "Medium") { order[order.indexOf(item)][2] = MEDIUM; }
+                if (e.target.value == "Large") { order[order.indexOf(item)][2] = LARGE;; }
+                row.cells[2].innerHTML = `$${parseFloat(order[order.indexOf(item)][2]).toFixed(2)}`;
             });
         });
+        // Adding Delivery Cost Display
+        let deliverCostRow = table.insertRow();
+        let deliveryCostCell = deliverCostRow.insertCell();
+        deliveryCostCell.innerHTML = "";
+        deliveryCostCell = deliverCostRow.insertCell();
+        deliveryCostCell.innerHTML = "Delivery";
+        deliveryCostCell = deliverCostRow.insertCell();
+        deliveryCostCell.innerHTML = `$${DELIVERYCHARGE.toFixed(2)}`;
+
+        // Adding Total Cost Display
+        let totalCostRow = table.insertRow();
+        let totalCostCell = totalCostRow.insertCell();
+        totalCostCell.innerHTML = "";
+        totalCostCell = totalCostRow.insertCell();
+        totalCostCell.innerHTML = "Total";
+        totalCostCell = totalCostRow.insertCell();
+        totalCostCell.innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
     });
 });
 
@@ -142,4 +192,16 @@ function changePage(currentPage, newPage) {
     document.getElementById(currentPage).classList.add("hide");
     document.getElementById(newPage).classList.remove("hide");
     return;
+}
+
+// Calculate total cost of the order given items and whether it is delivery
+function calculateCost(items, delivery) {
+    let totalCost = 0;
+    if (delivery == true) {
+        totalCost += DELIVERYCHARGE;
+    }
+    items.forEach(item => {
+        totalCost += parseFloat(item[2]);
+    });
+    return totalCost.toFixed(2);
 }
