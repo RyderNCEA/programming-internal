@@ -44,7 +44,8 @@ let coffeeSelectionMenu = document.getElementById("coffeeSelectionMenu");
 let currentPage = mainMenu;
 
 // Customer Order
-let order = []
+let orderAmount = 0;
+let order = [];
 
 // Main Menu Button Listeners
 pickUpButton.addEventListener("click", function (e) {
@@ -61,15 +62,17 @@ deliveryButton.addEventListener("click", function (e) {
 
 // When operator clicks button to open selection menu
 coffeeSelectionButton.addEventListener("click", function (e) {
+    e.preventDefault();
     coffeeSelectionMenu.innerHTML = "";
     // Add order amount number to coffee selection screen
-    coffeeSelectionMenu.innerHTML += `<p>Coffee Amount: ${coffeeAmount.value}</p>`;
+    orderAmount = coffeeAmount.value;
+    coffeeSelectionMenu.innerHTML += `<p id="coffeeAmountIndicator">Coffee Amount: ${orderAmount}</p>`;
     // Add all coffees to coffee selection screen
     COFFEES.forEach(coffee => {
         coffeeSelectionMenu.innerHTML += `
         <div id="coffee${COFFEES.indexOf(coffee)}Container">
         <p>${coffee}</p>
-        <select>
+        <select id="coffee${COFFEES.indexOf(coffee)}Size">
         <option>Regular</option>
         <option>Medium</option>
         <option>Large</option>
@@ -80,23 +83,63 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     // Add cancel order button to coffee selection screen
     coffeeSelectionMenu.innerHTML += `<button type="button" onclick="changePage('coffeeSelectionMenu','mainMenu')" class="cancelOrder">Cancel Order</button>`;
     // Add edit order button to coffee selection screen
-    coffeeSelectionMenu.innerHTML += `<button type="button" onclick="changePage('coffeeSelectionMenu','editOrderMenu')" class="editOrder">Edit Order</button>`;
+    coffeeSelectionMenu.innerHTML += `<button type="button" onclick="changePage('coffeeSelectionMenu','customerOrderMenu')" id="viewOrderButton">View Order</button>`;
     // Add Event Listeners to each Coffee button
     for (i = 0; i < COFFEES.length; i++) {
+        let coffeeName = COFFEES[i];
         let coffeeButton = document.getElementById(`coffee${i}`);
         let coffeeSize = document.getElementById(`coffee${i}Size`);
         coffeeButton.addEventListener("click", function (e) {
+            let coffeeAmountIndicator = document.getElementById("coffeeAmountIndicator");
+            if (orderAmount == 1) {
+                coffeeAmountIndicator.innerHTML = 'You have selected the entitled coffee order amount.';
+                return;
+            }
             e.preventDefault();
-            order.append(i, coffeeSize)
+            if (coffeeSize.value == "Regular") { order.push([coffeeName, coffeeSize.value, REGULAR]); }
+            if (coffeeSize.value == "Medium") { order.push([coffeeName, coffeeSize.value, MEDIUM]); }
+            if (coffeeSize.value == "Large") { order.push([coffeeName, coffeeSize.value, LARGE]); }
+            orderAmount -= 1;
+            coffeeAmountIndicator.innerHTML = `Coffee Amount: ${orderAmount}`
         });
     }
+
+    // Customer Order Menu Elements
+    let viewOrderButton = document.getElementById("viewOrderButton");
+    let customerOrderMenu = document.getElementById("customerOrderMenu");
+
+    // When operator proceeds to view customer order
+    viewOrderButton.addEventListener("click", function (e) {
+        let table = document.getElementById("customerOrder");
+        order.forEach(item => {
+            let row = table.insertRow();
+            let cell = row.insertCell();
+            cell.innerHTML = `${item[0]}`;
+            cell = row.insertCell();
+            cell.innerHTML = `      
+            <select id="coffee${order.indexOf(item)}SizeOrder">
+            <option>Regular</option>
+            <option>Medium</option>
+            <option>Large</option>
+            </select>`
+            let coffeeSizeOrder = document.getElementById(`coffee${order.indexOf(item)}SizeOrder`);
+            coffeeSizeOrder.value = `${item[1]}`;
+            cell = row.insertCell();
+            cell.innerHTML = `$${item[2]}`
+            cell = row.insertCell();
+            cell.innerHTML = `<button class="removeItem" id="removeItem${order.indexOf(item)}">X</button>`;
+            let removeItem = document.getElementById(`removeItem${order.indexOf(item)}`);
+            removeItem.addEventListener("click", function(e){
+                table.deleteRow(`${order.indexOf(item)+1}`);
+                order.splice(order.indexOf(item), 1);
+            });
+        });
+    });
 });
 
 // Change the screen to a new page
 function changePage(currentPage, newPage) {
-    console.log("Adding hide to " + currentPage)
     document.getElementById(currentPage).classList.add("hide");
-    console.log("Removing hide from " + newPage)
     document.getElementById(newPage).classList.remove("hide");
     return;
 }

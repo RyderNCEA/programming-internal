@@ -73,8 +73,21 @@
       </form>
     </div>
     <div class="hide" id="coffeeSelectionMenu"></div>
-    <div class="hide" id="customerOrderMenu"></div>
-    <div class="hide" id="editOrderMenu"></div>
+    <div class="hide" id="customerOrderMenu">
+      <table id="customerOrder">
+        <tr>
+          <th>Coffee</th>
+          <th>Size</th>
+          <th>Cost</th>
+        </tr>
+      </table>
+      <button
+        type="button"
+        onclick="changePage('customerOrderMenu','mainMenu')"
+        class="cancelOrder">
+        Cancel Order
+      </button>
+    </div>
     <script src="/javascript/main.js"></script>
   </body>
 </html>
