@@ -112,9 +112,8 @@ coffeeSelectionButton.addEventListener("click", function (e) {
 
     // When operator proceeds to view customer order
     viewOrderButton.addEventListener("click", function (e) {
-        // Create variable which stores order cost
-
         // Displaying the customer details
+        customerDetailsContainer.innerHTML = "";
         customerDetailsContainer.innerHTML += `<p>Name: ${customerName.value}`;
         if (customerPhone.value != "") {
             customerDetailsContainer.innerHTML += `<p>Address: ${customerAddress.value}`;
@@ -155,6 +154,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
                 order.splice(order.indexOf(item), 1);
                 orderAmount += 1;
                 coffeeAmountIndicator.innerHTML = `Coffee Amount: ${orderAmount}`;
+                table.rows[table.rows.length - 1].cells[2].innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
             });
             let sizeAdjustment = document.getElementById(`coffee${order.indexOf(item)}SizeOrder`);
             // Change size of a coffee in the order
@@ -165,21 +165,23 @@ coffeeSelectionButton.addEventListener("click", function (e) {
                 if (e.target.value == "Medium") { order[order.indexOf(item)][2] = MEDIUM; }
                 if (e.target.value == "Large") { order[order.indexOf(item)][2] = LARGE;; }
                 row.cells[2].innerHTML = `$${parseFloat(order[order.indexOf(item)][2]).toFixed(2)}`;
+                table.rows[table.rows.length - 1].cells[2].innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
+
             });
         });
         // Adding Delivery Cost Display
-        let deliverCostRow = table.insertRow();
-        let deliveryCostCell = deliverCostRow.insertCell();
-        deliveryCostCell.innerHTML = "";
-        deliveryCostCell = deliverCostRow.insertCell();
-        deliveryCostCell.innerHTML = "Delivery";
-        deliveryCostCell = deliverCostRow.insertCell();
-        deliveryCostCell.innerHTML = `$${DELIVERYCHARGE.toFixed(2)}`;
+        if (customerPhone.value != "") {
+            let deliverCostRow = table.insertRow();
+            let deliveryCostCell = deliverCostRow.insertCell();
+            deliveryCostCell = deliverCostRow.insertCell();
+            deliveryCostCell.innerHTML = "Delivery";
+            deliveryCostCell = deliverCostRow.insertCell();
+            deliveryCostCell.innerHTML = `$${DELIVERYCHARGE.toFixed(2)}`;
+        }
 
         // Adding Total Cost Display
         let totalCostRow = table.insertRow();
         let totalCostCell = totalCostRow.insertCell();
-        totalCostCell.innerHTML = "";
         totalCostCell = totalCostRow.insertCell();
         totalCostCell.innerHTML = "Total";
         totalCostCell = totalCostRow.insertCell();
