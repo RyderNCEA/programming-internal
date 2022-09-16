@@ -66,7 +66,16 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     coffeeSelectionMenu.innerHTML += `<p>Coffee Amount: ${coffeeAmount.value}</p>`;
     // Add all coffees to coffee selection screen
     COFFEES.forEach(coffee => {
-        coffeeSelectionMenu.innerHTML += `<button type="button" id="coffee${COFFEES.indexOf(coffee)}">${coffee}</button>`;
+        coffeeSelectionMenu.innerHTML += `
+        <div id="coffee${COFFEES.indexOf(coffee)}Container">
+        <p>${coffee}</p>
+        <select>
+        <option>Regular</option>
+        <option>Medium</option>
+        <option>Large</option>
+        </select>
+        <button type="button" id="coffee${COFFEES.indexOf(coffee)}">Add</button>
+        </div>`;
     });
     // Add cancel order button to coffee selection screen
     coffeeSelectionMenu.innerHTML += `<button type="button" onclick="changePage('coffeeSelectionMenu','mainMenu')" class="cancelOrder">Cancel Order</button>`;
@@ -74,8 +83,8 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     coffeeSelectionMenu.innerHTML += `<button type="button" onclick="changePage('coffeeSelectionMenu','editOrderMenu')" class="editOrder">Edit Order</button>`;
     // Add Event Listeners to each Coffee button
     for (i = 0; i < COFFEES.length; i++) {
-        coffeeButton = document.getElementById(`coffee${i}`);
-        coffeeSize = document.getElementById(`coffee${i}Size`);
+        let coffeeButton = document.getElementById(`coffee${i}`);
+        let coffeeSize = document.getElementById(`coffee${i}Size`);
         coffeeButton.addEventListener("click", function (e) {
             e.preventDefault();
             order.append(i, coffeeSize)
