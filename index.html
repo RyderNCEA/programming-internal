@@ -10,33 +10,71 @@
   <body>
     <h1>Cuppa Joe's Coffee - Staff</h1>
     <div id="mainMenu">
-      <button type="button" id="pickUpButton" onclick="changePage('mainMenu','customerInfo')">Pick Up</button>
-      <button type="button" id="deliveryButton" onclick="changePage('mainMenu','customerInfo')">Delivery</button>
+      <button
+        type="button"
+        id="pickUpButton"
+        onclick="changePage('mainMenu','customerInfoMenu')">
+        Pick Up
+      </button>
+      <button
+        type="button"
+        id="deliveryButton"
+        onclick="changePage('mainMenu','customerInfoMenu')">
+        Delivery
+      </button>
     </div>
-    <div class="hide" id="customerInfo">
+    <div class="hide" id="customerInfoMenu">
       <form id="customerInfoForm">
         <label for="customerName" id="customerNameLabel">Customer Name:</label>
-        <input type="text" id="customerName" /> <br />
+        <input type="text" id="customerName" />
+        <br />
         <div id="deliveryInfo">
-          <label for="customerAddress" id="customerAddressLabel">Customer Address:</label>
-          <input type="text" id="customerAddress" /> <br />
-          <label for="customerPhone" id="customerPhoneLabel">Customer Phone Number:</label>
+          <label for="customerAddress" id="customerAddressLabel">
+            Customer Address:
+          </label>
+          <input type="text" id="customerAddress" />
+          <br />
+          <label for="customerPhone" id="customerPhoneLabel">
+            Customer Phone Number:
+          </label>
           <input type="text" id="customerPhone" />
         </div>
-        <button type="button" onclick="changePage('customerInfo','mainMenu')" class="cancelOrder">Cancel Order</button>
-        <button type="button" onclick="changePage('customerInfo','coffeeAmount')">Coffee Order ></button>
+        <button
+          type="button"
+          onclick="changePage('customerInfoMenu','mainMenu')"
+          class="cancelOrder">
+          Cancel Order
+        </button>
+        <button
+          type="button"
+          onclick="changePage('customerInfoMenu','coffeeAmountMenu')">
+          Continue Order
+        </button>
       </form>
     </div>
-    <div class="hide" id="coffeeAmount">
+    <div class="hide" id="coffeeAmountMenu">
       <form id="coffeeAmountForm">
-        <label for="coffeeAmount" id="coffeeAmountLabel">Amount of Coffees:</label>
+        <label for="coffeeAmount" id="coffeeAmountLabel">
+          Amount of Coffees:
+        </label>
         <input type="number" id="coffeeAmount" />
-        <button type="button" onclick="changePage('customerInfo','coffeeAmount')">Select Coffees ></button>
+        <button
+          type="button"
+          onclick="changePage('coffeeAmountMenu','mainMenu')"
+          class="cancelOrder">
+          Cancel Order
+        </button>
+        <button
+          type="button"
+          id="coffeeSelectionButton"
+          onclick="changePage('coffeeAmountMenu','coffeeSelectionMenu')">
+          Select Coffees
+        </button>
       </form>
     </div>
-    <div class="hide" id="coffeeSelection"></div>
-    <div class="hide" id="customerOrder"></div>
-    <div class="hide" id="editOrder"></div>
+    <div class="hide" id="coffeeSelectionMenu"></div>
+    <div class="hide" id="customerOrderMenu"></div>
+    <div class="hide" id="editOrderMenu"></div>
     <script src="/javascript/main.js"></script>
   </body>
 </html>
