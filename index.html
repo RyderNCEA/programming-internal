@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
     <title>Cuppa Joe's Coffee</title>
-</head>
-<body>
-    <div id="mainMenu"></div>
-    <div id="customerInfo"></div>
-    <div id="coffeeAmount"></div>
-    <div id="coffeeSelection"></div>
-    <div id="customerOrder"></div>
-    <div id="editOrder"></div>
-    <script href="/javascript/main.js"></script>
-</body>
+  </head>
+  <body>
+    <h1>Cuppa Joe's Coffee - Staff</h1>
+    <div id="mainMenu">
+      <button type="button" id="pickUpButton" onclick="changePage('mainMenu','customerInfo')">Pick Up</button>
+      <button type="button" id="deliveryButton" onclick="changePage('mainMenu','customerInfo')">Delivery</button>
+    </div>
+    <div class="hide" id="customerInfo">
+      <form id="customerInfoForm">
+        <label for="customerName" id="customerNameLabel">Customer Name:</label>
+        <input type="text" id="customerName" /> <br />
+        <div id="deliveryInfo">
+          <label for="customerAddress" id="customerAddressLabel">Customer Address:</label>
+          <input type="text" id="customerAddress" /> <br />
+          <label for="customerPhone" id="customerPhoneLabel">Customer Phone Number:</label>
+          <input type="text" id="customerPhone" />
+        </div>
+        <button type="button" onclick="changePage('customerInfo','mainMenu')" class="cancelOrder">Cancel Order</button>
+        <button type="button" onclick="changePage('customerInfo','coffeeAmount')">Coffee Order ></button>
+      </form>
+    </div>
+    <div class="hide" id="coffeeAmount">
+      <form id="coffeeAmountForm">
+        <label for="coffeeAmount" id="coffeeAmountLabel">Amount of Coffees:</label>
+        <input type="number" id="coffeeAmount" />
+        <button type="button" onclick="changePage('customerInfo','coffeeAmount')">Select Coffees ></button>
+      </form>
+    </div>
+    <div class="hide" id="coffeeSelection"></div>
+    <div class="hide" id="customerOrder"></div>
+    <div class="hide" id="editOrder"></div>
+    <script src="/javascript/main.js"></script>
+  </body>
 </html>
