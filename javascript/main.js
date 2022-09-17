@@ -66,24 +66,27 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     coffeeSelectionMenu.innerHTML = "";
     // Add order amount number to coffee selection screen
     orderAmount = coffeeAmount.value;
-    coffeeSelectionMenu.innerHTML += `<p id="coffeeAmountIndicator">Coffee Amount: ${orderAmount}</p>`;
+    coffeeSelectionMenu.innerHTML += `<p id="coffeeAmountIndicator">Please select ${orderAmount} more coffee(s).</p>`;
+    // Add coffee selection container 
+    coffeeSelectionMenu.innerHTML += `<div id="coffeeSelectionContainer"></div>`;
+    let coffeeSelectionContainer = document.getElementById("coffeeSelectionContainer");
     // Add all coffees to coffee selection screen
     COFFEES.forEach(coffee => {
-        coffeeSelectionMenu.innerHTML += `
-        <div id="coffee${COFFEES.indexOf(coffee)}Container">
+        coffeeSelectionContainer.innerHTML += `
+        <div class="coffeeContainer" id="coffee${COFFEES.indexOf(coffee)}Container">
         <p>${coffee}</p>
         <select id="coffee${COFFEES.indexOf(coffee)}Size">
         <option>Regular</option>
         <option>Medium</option>
         <option>Large</option>
         </select>
-        <button type="button" id="coffee${COFFEES.indexOf(coffee)}">Add</button>
+        <button class="button-default" type="button" id="coffee${COFFEES.indexOf(coffee)}">+</button>
         </div>`;
     });
     // Add cancel order button to coffee selection screen
-    coffeeSelectionMenu.innerHTML += `<button type="button" onclick="changePage('coffeeSelectionMenu','mainMenu')" class="cancelOrder">Cancel Order</button>`;
+    coffeeSelectionMenu.innerHTML += `<button class="button-default cancelOrder" type="button" onclick="location.reload()">Cancel Order</button>`;
     // Add edit order button to coffee selection screen
-    coffeeSelectionMenu.innerHTML += `<button type="button" onclick="changePage('coffeeSelectionMenu','customerOrderMenu')" id="viewOrderButton">View Order</button>`;
+    coffeeSelectionMenu.innerHTML += `<button class="button-default" type="button" onclick="changePage('coffeeSelectionMenu','customerOrderMenu')" id="viewOrderButton">View Order</button>`;
     // Add Event Listeners to each Coffee button
     for (i = 0; i < COFFEES.length; i++) {
         let coffeeName = COFFEES[i];
@@ -95,10 +98,10 @@ coffeeSelectionButton.addEventListener("click", function (e) {
             if (orderAmount == 0) { return }
             orderAmount -= 1;
             if (orderAmount == 0) {
-                coffeeAmountIndicator.innerHTML = 'You have selected the entitled coffee order amount.';
+                coffeeAmountIndicator.innerHTML = 'You have selected the entitled number of coffees.';
             }
             else {
-                coffeeAmountIndicator.innerHTML = `Coffee Amount: ${orderAmount}`;
+                coffeeAmountIndicator.innerHTML = `Please select ${orderAmount} more coffee(s).`;
             }
             if (coffeeSize.value == "Regular") { order.push([coffeeName, coffeeSize.value, REGULAR]); }
             if (coffeeSize.value == "Medium") { order.push([coffeeName, coffeeSize.value, MEDIUM]); }
@@ -114,10 +117,10 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     viewOrderButton.addEventListener("click", function (e) {
         // Displaying the customer details
         customerDetailsContainer.innerHTML = "";
-        customerDetailsContainer.innerHTML += `<p>Name: ${customerName.value}`;
+        customerDetailsContainer.innerHTML += `<p><strong>Name:</strong> ${customerName.value}`;
         if (customerPhone.value != "") {
-            customerDetailsContainer.innerHTML += `<p>Address: ${customerAddress.value}`;
-            customerDetailsContainer.innerHTML += `<p>Phone Number: ${customerPhone.value}`;
+            customerDetailsContainer.innerHTML += `<p><strong>Address:</strong> ${customerAddress.value}`;
+            customerDetailsContainer.innerHTML += `<p><strong>Phone Number:</strong> ${customerPhone.value}`;
         }
 
         // Addition of the customers order to the screen
@@ -153,7 +156,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
                 table.deleteRow(`${order.indexOf(item) + 1}`);
                 order.splice(order.indexOf(item), 1);
                 orderAmount += 1;
-                coffeeAmountIndicator.innerHTML = `Coffee Amount: ${orderAmount}`;
+                coffeeAmountIndicator.innerHTML = `Please select ${orderAmount} more coffee(s).`;
                 table.rows[table.rows.length - 1].cells[2].innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
             });
             let sizeAdjustment = document.getElementById(`coffee${order.indexOf(item)}SizeOrder`);
