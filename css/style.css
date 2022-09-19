@@ -1,6 +1,6 @@
 /* Hide Elements Class */
 .hide {
-  display: none;
+  display: none!important;
 }
 
 /* Apply changes across website */
@@ -26,7 +26,7 @@ body {
 
 .coffeeContainer {
   padding: 10px;
-  box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 6px;
 }
 
@@ -65,8 +65,7 @@ body {
   background-color: #fafbfc;
   border: 1px solid rgba(27, 31, 35, 0.15);
   border-radius: 6px;
-  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0,
-    rgba(255, 255, 255, 0.25) 0 1px 0 inset;
+  box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0;
   box-sizing: border-box;
   color: #24292e;
   cursor: pointer;
@@ -98,14 +97,12 @@ button:hover {
 /* Delivery and Pickup Button */
 #pickUpButton,
 #deliveryButton {
-  padding: 100px;
+  padding: 120px;
   margin: 10px;
-  margin-top: 100px;
   font-size: 2rem;
   border: none;
   background-color: white;
-  box-shadow: 0 25.6px 57.6px 0 rgb(0 0 0 / 18%),
-    0 4.8px 14.4px 0 rgb(0 0 0 / 14%);
+  box-shadow: 0 25.6px 57.6px 0 rgb(0 0 0 / 18%);
   cursor: pointer;
   transition: 0.2s;
 }
@@ -205,11 +202,35 @@ table td > button {
 
 #coffeeAmountIndicator {
   padding: 10px;
-  box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 6px;
   font-weight: bold;
 }
 
 #customerOrderMenu {
   overflow: visible;
+}
+
+.errorMessage {
+  background-color: rgb(255, 237, 238);
+  color: rgb(220, 15, 26);
+  margin: 0;
+}
+
+.fa-exclamation-triangle {
+  color: rgb(220, 15, 26);
+  padding: 5px;
+  margin-right: 10px;
+}
+
+#coffeeSelectionMenu {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+#coffeeOrderContainer {
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+    border-radius: 6px;
+    margin-left: 20px;
 }

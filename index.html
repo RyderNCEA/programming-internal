@@ -4,11 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
-      crossorigin="anonymous" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/f189d8deb4.js"
+      crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/style.css" />
     <title>Cuppa Joe's Coffee</title>
   </head>
   <body>
@@ -46,7 +45,7 @@
             <label for="customerPhone" id="customerPhoneLabel">
               Customer Phone Number:
             </label>
-            <input type="text" id="customerPhone" />
+            <input type="text" placeholder="123 456 7890" id="customerPhone" />
           </div>
           <button
             type="button"
@@ -54,10 +53,7 @@
             class="cancelOrder button-default">
             Cancel Order
           </button>
-          <button
-            type="button"
-            onclick="changePage('customerInfoMenu','coffeeAmountMenu')"
-            class="button-default">
+          <button type="button" id="customerInfoButton" class="button-default">
             Continue Order
           </button>
         </form>
@@ -68,7 +64,9 @@
             Amount of Coffees:
           </label>
           <input type="number" id="coffeeAmount" />
-          <p class="caption">(The customer is allowed a maximum of 10 coffees)</p>
+          <p class="caption">
+            (The customer is allowed a maximum of 10 coffees)
+          </p>
           <button
             class="button-default cancelOrder"
             type="button"
@@ -78,18 +76,19 @@
           <button
             type="button"
             id="coffeeSelectionButton"
-            onclick="changePage('coffeeAmountMenu','coffeeSelectionMenu')"
             class="button-default">
             Select Coffees
           </button>
         </form>
       </div>
-      <div class="hide" id="coffeeSelectionMenu"></div>
+      <div class="hide" id="coffeeSelectionMenu">
+
+      </div>
       <div class="hide" id="customerOrderMenu">
         <div id="customerDetailsContainer">
           <h2>Customer Details</h2>
         </div>
-        <div id="orderContainer">
+        <div class="orderContainer">
           <h2>Order Details</h2>
           <table id="customerOrder"></table>
         </div>
@@ -101,7 +100,7 @@
         </button>
         <button
           type="button"
-          onclick="changePage('customerOrderMenu','coffeeSelectionMenu')"
+          id="addCoffeesButton"
           class="button-default">
           Select Coffees
         </button>
@@ -114,6 +113,6 @@
         </button>
       </div>
     </div>
-    <script src="/javascript/main.js"></script>
+    <script src="javascript/main.js"></script>
   </body>
 </html>
