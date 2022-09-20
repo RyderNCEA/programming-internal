@@ -54,16 +54,47 @@ let delivery = false;
 // Main Menu Button Listeners
 pickUpButton.addEventListener("click", function (e) {
     e.preventDefault();
+    changePage('mainMenu', 'customerInfoMenu')
     // Hide delivery information input
     deliveryInfo.classList.add("hide");
 });
 
 deliveryButton.addEventListener("click", function (e) {
     e.preventDefault();
+    changePage('mainMenu', 'customerInfoMenu')
     // Show delivery information input
     if (deliveryInfo.classList.contains("hide")) { deliveryInfo.classList.remove("hide"); }
     delivery = true;
 });
+
+// Setup Past Order Variables
+let storedOrders = JSON.parse(localStorage.getItem("orders"));
+if (storedOrders == null) {
+    localStorage.setItem('orders', JSON.stringify([]))
+}
+
+storedOrders = JSON.parse(localStorage.getItem("orders"));
+// Add Past Orders To Main Menu
+let pastOrders = document.getElementById("pastOrders");
+console.log(storedOrders, storedOrders.length)
+if (storedOrders.length != []) {
+    storedOrders.forEach(pastOrder => {
+        pastOrders.innerHTML += `<li><strong>Order #${storedOrders.indexOf(pastOrder) + 1} (${pastOrder[0][3][0]})</strong> <button id="pastOrderButton${storedOrders.indexOf(pastOrder)}" class="buttonDefault">View Order</button></li>`
+    });
+    storedOrders.forEach(pastOrder => {
+        let viewPastOrderButton = document.getElementById(`pastOrderButton${storedOrders.indexOf(pastOrder)}`);
+        viewPastOrderButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            console.log('clicked', viewPastOrderButton.id)
+            generatePastOrder("pastOrderTable", pastOrder);
+            changePage("mainMenu", "pastOrderMenu");
+        })
+    });
+}
+else {
+    pastOrders.innerHTML = '<li>There are no past orders.</li>'
+}
+
 
 // Customer Information Button
 customerInfoButton.addEventListener("click", function (e) {
@@ -101,7 +132,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         return;
     }
     // Check if the amount is not greater than 10 and greater than 0
-    if (coffeeAmount.value > MAXIMUMCOFFEES || coffeeAmount.value < 1) {
+    if (coffeeAmount.value > MAXIMUMCOFFEES || coffeeAmount.value < 1 || coffeeAmount.value % 1 != 0) {
         let errorText = document.getElementById(coffeeAmount.id + "Error");
         errorText.innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>` + 'Please enter a number from 1-10.'
         return;
@@ -128,13 +159,13 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         <option>Medium</option>
         <option>Large</option>
         </select>
-        <button class="button-default" type="button" id="coffee${COFFEES.indexOf(coffee)}">+</button>
+        <button class="buttonDefault" type="button" id="coffee${COFFEES.indexOf(coffee)}">+</button>
         </div>`;
     });
     // Add cancel order button to coffee selection screen
-    selectionContentContainer.innerHTML += `<button class="button-default cancelOrder" type="button" onclick="location.reload()">Cancel Order</button>`;
+    selectionContentContainer.innerHTML += `<button class="buttonDefault cancelOrder" type="button" onclick="location.reload()">Cancel Order</button>`;
     // Add edit order button to coffee selection screen
-    selectionContentContainer.innerHTML += `<button class="button-default" type="button" onclick="changePage('coffeeSelectionMenu','customerOrderMenu')" id="viewOrderButton">View Order</button>`;
+    selectionContentContainer.innerHTML += `<button class="buttonDefault" type="button" onclick="changePage('coffeeSelectionMenu','customerOrderMenu')" id="viewOrderButton">View Order</button>`;
     // Add customer order details
     coffeeSelectionMenu.innerHTML += `
     <div id="coffeeOrderContainer">
@@ -159,9 +190,9 @@ coffeeSelectionButton.addEventListener("click", function (e) {
                 coffeeAmountIndicator.innerHTML = `Please select ${orderAmount} more coffee(s).`;
             }
             // Add coffee to order depending on operator selection
-            if (coffeeSize.value == "Regular") { order.push([coffeeName, coffeeSize.value, REGULAR]); }
-            if (coffeeSize.value == "Medium") { order.push([coffeeName, coffeeSize.value, MEDIUM]); }
-            if (coffeeSize.value == "Large") { order.push([coffeeName, coffeeSize.value, LARGE]); }
+            if (coffeeSize.value == "Regular") { order.push([coffeeName, coffeeSize.value, REGULAR, [customerName.value, customerAddress.value, customerPhone.value]]); }
+            if (coffeeSize.value == "Medium") { order.push([coffeeName, coffeeSize.value, MEDIUM, [customerName.value, customerAddress.value, customerPhone.value]]); }
+            if (coffeeSize.value == "Large") { order.push([coffeeName, coffeeSize.value, LARGE, [customerName.value, customerAddress.value, customerPhone.value]]); }
             generateOrder('customerSelectionOrder');
         });
     }
@@ -169,6 +200,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     // Customer Order Menu Elements
     let viewOrderButton = document.getElementById("viewOrderButton");
     let addCoffees = document.getElementById("addCoffeesButton");
+    let completeOrderButton = document.getElementById('completeOrderButton')
     let customerDetailsContainer = document.getElementById("customerDetailsContainer")
 
     // When operator proceeds to view customer order
@@ -184,6 +216,15 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         generateOrder('customerOrder');
     });
 
+    // When operator clicks button to complete order
+    completeOrderButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        let storedOrders = JSON.parse(localStorage.getItem("orders"));
+        storedOrders.push(order);
+        localStorage.setItem('orders', JSON.stringify(storedOrders))
+        location.reload();
+    })
+
     // When operator clicks button to go back to selection menu
     addCoffees.addEventListener("click", function (e) {
         e.preventDefault();
@@ -191,8 +232,6 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         generateOrder('customerSelectionOrder');
     })
 });
-
-
 
 // Change the screen to a new page
 function changePage(currentPage, newPage) {
@@ -232,6 +271,8 @@ function checkEmpty(element, message) {
         return false;
     }
 }
+
+// Generate the users order
 function generateOrder(tableId) {
     // Addition of the customers order to the screen
     let table = document.getElementById(tableId);
@@ -288,7 +329,7 @@ function generateOrder(tableId) {
         let deliverCostRow = table.insertRow();
         let deliveryCostCell = deliverCostRow.insertCell();
         deliveryCostCell = deliverCostRow.insertCell();
-        deliveryCostCell.innerHTML = "Delivery";
+        deliveryCostCell.innerHTML = "<strong>Delivery Fee</strong>";
         deliveryCostCell = deliverCostRow.insertCell();
         deliveryCostCell.innerHTML = `$${DELIVERYCHARGE.toFixed(2)}`;
     }
@@ -297,7 +338,57 @@ function generateOrder(tableId) {
     let totalCostRow = table.insertRow();
     let totalCostCell = totalCostRow.insertCell();
     totalCostCell = totalCostRow.insertCell();
-    totalCostCell.innerHTML = "Total";
+    totalCostCell.innerHTML = "<strong>Total</strong>";
     totalCostCell = totalCostRow.insertCell();
     totalCostCell.innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
+}
+
+function generatePastOrder(tableId, order) {
+    // Adding customers details to the screen
+    let pastOrderCustomer = document.getElementById('pastOrderCustomer');
+    pastOrderCustomer.innerHTML = "";
+    pastOrderCustomer.innerHTML += `<p><strong>Name:</strong> ${order[0][3][0]}`;
+    if (order[0][3][2] != "") {
+        pastOrderCustomer.innerHTML += `<p><strong>Address:</strong> ${order[0][3][2]}`;
+        pastOrderCustomer.innerHTML += `<p><strong>Phone Number:</strong> ${order[0][3][3]}`;
+    }
+
+    // Addition of the customers order to the screen
+    let table = document.getElementById(tableId);
+    table.innerHTML = "";
+    table.innerHTML += `        
+           <tr>
+           <th>Coffee</th>
+           <th>Size</th>
+           <th>Cost</th>
+           </tr>`
+    // Add each coffee to the order statement
+    order.forEach(item => {
+        let row = table.insertRow();
+        let cell = row.insertCell();
+        cell.innerHTML = `${item[0]}`;
+        cell = row.insertCell();
+        // Add ability to change sizes
+        cell.innerHTML = `${item[1]}`
+        cell = row.insertCell();
+        cell.innerHTML = `$${parseFloat(item[2]).toFixed(2)}`;
+    });
+    // Adding Delivery Cost Display
+    if (order[0][3][2] != "") {
+        let deliverCostRow = table.insertRow();
+        let deliveryCostCell = deliverCostRow.insertCell();
+        deliveryCostCell = deliverCostRow.insertCell();
+        deliveryCostCell.innerHTML = "<strong>Delivery Fee</strong>";
+        deliveryCostCell = deliverCostRow.insertCell();
+        deliveryCostCell.innerHTML = `$${DELIVERYCHARGE.toFixed(2)}`;
+    }
+
+    // Adding Total Cost Display
+    let totalCostRow = table.insertRow();
+    let totalCostCell = totalCostRow.insertCell();
+    totalCostCell = totalCostRow.insertCell();
+    totalCostCell.innerHTML = "<strong>Total</strong>";
+    totalCostCell = totalCostRow.insertCell();
+    totalCostCell.innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
+
 }

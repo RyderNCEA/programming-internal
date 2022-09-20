@@ -1,6 +1,6 @@
 /* Hide Elements Class */
 .hide {
-  display: none!important;
+  display: none !important;
 }
 
 /* Apply changes across website */
@@ -26,7 +26,8 @@ body {
 
 .coffeeContainer {
   padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 6px;
 }
 
@@ -58,7 +59,7 @@ body {
 }
 
 /* Default Button */
-.button-default {
+.buttonDefault {
   margin-top: 10px;
   margin-right: 10px;
   appearance: none;
@@ -183,6 +184,7 @@ table td {
   border-collapse: collapse;
   box-sizing: border-box;
   padding: 0.75rem;
+  padding-left: 0;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
   border-bottom: 1px solid #dee2e6;
@@ -202,7 +204,8 @@ table td > button {
 
 #coffeeAmountIndicator {
   padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   border-radius: 6px;
   font-weight: bold;
 }
@@ -224,13 +227,34 @@ table td > button {
 }
 
 #coffeeSelectionMenu {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
 }
 
 #coffeeOrderContainer {
-    padding: 10px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    border-radius: 6px;
-    margin-left: 20px;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 6px;
+  margin-left: 20px;
+}
+
+#pastOrders {
+  padding-left: 0;
+}
+
+#pastOrders li {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  justify-content: space-between;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+#pastOrders button {
+  margin: 0;
 }

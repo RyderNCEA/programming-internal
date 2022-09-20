@@ -14,20 +14,16 @@
     <div class="container">
       <h1>Cuppa Joe's Coffee - Staff</h1>
       <div id="mainMenu">
-        <button
-          type="button"
-          id="pickUpButton"
-          onclick="changePage('mainMenu','customerInfoMenu')"
-          class="button-default">
+        <button type="button" id="pickUpButton" class="buttonDefault">
           Pick Up
         </button>
-        <button
-          type="button"
-          id="deliveryButton"
-          onclick="changePage('mainMenu','customerInfoMenu')"
-          class="button-default">
+        <button type="button" id="deliveryButton" class="buttonDefault">
           Delivery
         </button>
+        <div id="pastOrdersContainer">
+            <h1>Past Orders</h1>
+          <ul id="pastOrders"></ul>
+        </div>
       </div>
       <div class="hide" id="customerInfoMenu">
         <form id="customerInfoForm">
@@ -50,10 +46,10 @@
           <button
             type="button"
             onclick="location.reload()"
-            class="cancelOrder button-default">
+            class="cancelOrder buttonDefault">
             Cancel Order
           </button>
-          <button type="button" id="customerInfoButton" class="button-default">
+          <button type="button" id="customerInfoButton" class="buttonDefault">
             Continue Order
           </button>
         </form>
@@ -68,7 +64,7 @@
             (The customer is allowed a maximum of 10 coffees)
           </p>
           <button
-            class="button-default cancelOrder"
+            class="buttonDefault cancelOrder"
             type="button"
             onclick="location.reload()">
             Cancel Order
@@ -76,14 +72,12 @@
           <button
             type="button"
             id="coffeeSelectionButton"
-            class="button-default">
+            class="buttonDefault">
             Select Coffees
           </button>
         </form>
       </div>
-      <div class="hide" id="coffeeSelectionMenu">
-
-      </div>
+      <div class="hide" id="coffeeSelectionMenu"></div>
       <div class="hide" id="customerOrderMenu">
         <div id="customerDetailsContainer">
           <h2>Customer Details</h2>
@@ -93,24 +87,31 @@
           <table id="customerOrder"></table>
         </div>
         <button
-          class="button-default cancelOrder"
+          class="buttonDefault cancelOrder"
           type="button"
           onclick="location.reload()">
           Cancel Order
         </button>
-        <button
-          type="button"
-          id="addCoffeesButton"
-          class="button-default">
+        <button type="button" id="addCoffeesButton" class="buttonDefault">
           Select Coffees
         </button>
-        <button
-          class="button-default"
-          id="completeOrderButton"
-          type="button"
-          onclick="location.reload()">
+        <button class="buttonDefault" id="completeOrderButton" type="button">
           Complete Order
         </button>
+      </div>
+      <div class="hide" id="pastOrderMenu">
+        <h2>Viewing Past Order</h2>
+        <p>This is an order that has been previously completed. Below are the details of the completed order.</p>
+        <h3>Customer Details</h3>
+        <div id="pastOrderCustomer"></div>
+        <h3>Order Details</h2>
+        <table id="pastOrderTable"></table>
+        <button
+        class="buttonDefault cancelOrder"
+        type="button"
+        onclick="location.reload()">
+        Close Order
+      </button>
       </div>
     </div>
     <script src="javascript/main.js"></script>
