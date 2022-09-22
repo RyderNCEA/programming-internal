@@ -141,7 +141,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     // Add page content container
     coffeeSelectionMenu.innerHTML += `<div id="selectionContentContainer"></div>`
     let selectionContentContainer = document.getElementById("selectionContentContainer");
-    selectionContentContainer.innerHTML += `<p id="coffeeAmountIndicator">Please select ${orderAmount} more coffee(s).</p>`;
+    selectionContentContainer.innerHTML += `<h2>Available Coffees</h2>`;
     // Add coffee selection container 
     selectionContentContainer.innerHTML += `<div id="coffeeSelectionContainer"></div>`;
     let coffeeSelectionContainer = document.getElementById("coffeeSelectionContainer");
@@ -176,15 +176,6 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         let coffeeSize = document.getElementById(`coffee${i}Size`);
         coffeeButton.addEventListener("click", function (e) {
             e.preventDefault();
-            let coffeeAmountIndicator = document.getElementById("coffeeAmountIndicator");
-            if (orderAmount == 0) { return }
-            orderAmount -= 1;
-            if (orderAmount == 0) {
-                coffeeAmountIndicator.innerHTML = 'You have selected the entitled number of coffees.';
-            }
-            else {
-                coffeeAmountIndicator.innerHTML = `Please select ${orderAmount} more coffee(s).`;
-            }
             // Add coffee to order depending on operator selection
             if (coffeeSize.value == "Regular") { order.push([coffeeName, coffeeSize.value, REGULAR, [customerName.value, customerAddress.value, customerPhone.value]]); }
             if (coffeeSize.value == "Medium") { order.push([coffeeName, coffeeSize.value, MEDIUM, [customerName.value, customerAddress.value, customerPhone.value]]); }
@@ -204,6 +195,9 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         e.preventDefault();
         // Displaying the customer details
         customerDetailsContainer.innerHTML = "";
+        customerDetailsContainer.innerHTML += `<h2>Current Order</h2>`;
+        customerDetailsContainer.innerHTML += `Please ensure that all below details are correct and that the customers order is correct.`;
+        customerDetailsContainer.innerHTML += `<h3>Customer Details</h3>`;
         customerDetailsContainer.innerHTML += `<p><strong>Name:</strong> ${customerName.value}`;
         if (customerPhone.value != "") {
             customerDetailsContainer.innerHTML += `<p><strong>Address:</strong> ${customerAddress.value}`;
