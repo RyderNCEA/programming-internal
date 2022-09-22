@@ -43,9 +43,6 @@ let coffeeAmountMenu = document.getElementById("coffeeAmountMenu");
 let coffeeAmount = document.getElementById("coffeeAmount");
 let coffeeSelectionMenu = document.getElementById("coffeeSelectionMenu");
 
-// Page operator is currently on
-let currentPage = mainMenu;
-
 // Customer Order
 let orderAmount = 0;
 let order = [];
@@ -76,7 +73,6 @@ if (storedOrders == null) {
 storedOrders = JSON.parse(localStorage.getItem("orders"));
 // Add Past Orders To Main Menu
 let pastOrders = document.getElementById("pastOrders");
-console.log(storedOrders, storedOrders.length)
 if (storedOrders.length != []) {
     storedOrders.forEach(pastOrder => {
         pastOrders.innerHTML += `<li><strong>Order #${storedOrders.indexOf(pastOrder) + 1} (${pastOrder[0][3][0]})</strong> <button id="pastOrderButton${storedOrders.indexOf(pastOrder)}" class="buttonDefault">View Order</button></li>`
@@ -349,8 +345,8 @@ function generatePastOrder(tableId, order) {
     pastOrderCustomer.innerHTML = "";
     pastOrderCustomer.innerHTML += `<p><strong>Name:</strong> ${order[0][3][0]}`;
     if (order[0][3][2] != "") {
-        pastOrderCustomer.innerHTML += `<p><strong>Address:</strong> ${order[0][3][2]}`;
-        pastOrderCustomer.innerHTML += `<p><strong>Phone Number:</strong> ${order[0][3][3]}`;
+        pastOrderCustomer.innerHTML += `<p><strong>Address:</strong> ${order[0][3][1]}`;
+        pastOrderCustomer.innerHTML += `<p><strong>Phone Number:</strong> ${order[0][3][2]}`;
     }
 
     // Addition of the customers order to the screen
