@@ -141,6 +141,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     coffeeSelectionMenu.innerHTML += `<div id="selectionContentContainer"></div>`
     let selectionContentContainer = document.getElementById("selectionContentContainer");
     selectionContentContainer.innerHTML += `<h2>Available Coffees</h2>`;
+    selectionContentContainer.innerHTML += `<p>The customer can order up to a maximum of 10 coffees.<p>`;
     // Add coffee selection container 
     selectionContentContainer.innerHTML += `<div id="coffeeSelectionContainer"></div>`;
     let coffeeSelectionContainer = document.getElementById("coffeeSelectionContainer");
