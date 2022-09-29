@@ -137,7 +137,6 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     changePage('coffeeAmountMenu', 'coffeeSelectionMenu');
     // Add order amount number to coffee selection screen
     coffeeSelectionMenu.innerHTML = "";
-    orderAmount = coffeeAmount.value;
     // Add page content container
     coffeeSelectionMenu.innerHTML += `<div id="selectionContentContainer"></div>`
     let selectionContentContainer = document.getElementById("selectionContentContainer");
@@ -176,6 +175,11 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         let coffeeSize = document.getElementById(`coffee${i}Size`);
         coffeeButton.addEventListener("click", function (e) {
             e.preventDefault();
+            // Check if they have ordered the maximum coffee amount.
+            if (orderAmount == 10) {
+                return;
+            }
+            orderAmount += 1;
             // Add coffee to order depending on operator selection
             if (coffeeSize.value == "Regular") { order.push([coffeeName, coffeeSize.value, REGULAR, [customerName.value, customerAddress.value, customerPhone.value]]); }
             if (coffeeSize.value == "Medium") { order.push([coffeeName, coffeeSize.value, MEDIUM, [customerName.value, customerAddress.value, customerPhone.value]]); }
@@ -307,6 +311,7 @@ function generateOrder(tableId) {
         removeItem.addEventListener("click", function (e) {
             e.preventDefault();
             table.deleteRow(`${order.indexOf(item) + 1}`);
+            orderAmount -= 1;
             order.splice(order.indexOf(item), 1);
             table.rows[table.rows.length - 1].cells[2].innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
         });
