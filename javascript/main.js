@@ -78,10 +78,10 @@ if (storedOrders.length != []) {
         pastOrders.innerHTML += `<li><strong>Order #${storedOrders.indexOf(pastOrder) + 1} (${pastOrder[0][3][0]})</strong> <button id="pastOrderButton${storedOrders.indexOf(pastOrder)}" class="buttonDefault">View Order</button></li>`
     });
     storedOrders.forEach(pastOrder => {
+        // Show the order details if the operator chooses to view.
         let viewPastOrderButton = document.getElementById(`pastOrderButton${storedOrders.indexOf(pastOrder)}`);
         viewPastOrderButton.addEventListener("click", function (e) {
             e.preventDefault();
-            console.log('clicked', viewPastOrderButton.id)
             generatePastOrder("pastOrderTable", pastOrder);
             changePage("mainMenu", "pastOrderMenu");
         })
@@ -199,6 +199,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         customerDetailsContainer.innerHTML += `Please ensure that all below details are correct and that the customers order is correct.`;
         customerDetailsContainer.innerHTML += `<h3>Customer Details</h3>`;
         customerDetailsContainer.innerHTML += `<p><strong>Name:</strong> ${customerName.value}`;
+        // Display delivery details if it is a delivery order
         if (customerPhone.value != "") {
             customerDetailsContainer.innerHTML += `<p><strong>Address:</strong> ${customerAddress.value}`;
             customerDetailsContainer.innerHTML += `<p><strong>Phone Number:</strong> ${customerPhone.value}`;
@@ -209,6 +210,13 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     // When operator clicks button to complete order
     completeOrderButton.addEventListener("click", function (e) {
         e.preventDefault();
+        // Display an error if the order is empty
+        if (order.length == 0) {
+            let errorText = document.getElementById("amountError");
+            errorText.innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>` + "You have not selected any coffees.";
+            return;
+        }
+        // Store order in past orders
         let storedOrders = JSON.parse(localStorage.getItem("orders"));
         storedOrders.push(order);
         localStorage.setItem('orders', JSON.stringify(storedOrders))
@@ -219,6 +227,8 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     addCoffees.addEventListener("click", function (e) {
         e.preventDefault();
         changePage('customerOrderMenu', 'coffeeSelectionMenu');
+        let errorText = document.getElementById("amountError");
+        errorText.innerHTML = "";
         generateOrder('customerSelectionOrder');
     })
 });
@@ -298,8 +308,6 @@ function generateOrder(tableId) {
             e.preventDefault();
             table.deleteRow(`${order.indexOf(item) + 1}`);
             order.splice(order.indexOf(item), 1);
-            orderAmount += 1;
-            coffeeAmountIndicator.innerHTML = `Please select ${orderAmount} more coffee(s).`;
             table.rows[table.rows.length - 1].cells[2].innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
         });
         let sizeAdjustment = document.getElementById(`coffee${order.indexOf(item)}Size${tableId}`);
@@ -333,6 +341,7 @@ function generateOrder(tableId) {
     totalCostCell.innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
 }
 
+// Generate a past order
 function generatePastOrder(tableId, order) {
     // Adding customers details to the screen
     let pastOrderCustomer = document.getElementById('pastOrderCustomer');
