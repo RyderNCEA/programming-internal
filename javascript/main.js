@@ -58,7 +58,7 @@ pickUpButton.addEventListener("click", function (e) {
 
 deliveryButton.addEventListener("click", function (e) {
     e.preventDefault();
-    changePage('mainMenu', 'customerInfoMenu')
+    changePage('mainMenu', 'customerInfoMenu');
     // Show delivery information input
     if (deliveryInfo.classList.contains("hide")) { deliveryInfo.classList.remove("hide"); }
     delivery = true;
@@ -67,7 +67,7 @@ deliveryButton.addEventListener("click", function (e) {
 // Setup Past Order Variables
 let storedOrders = JSON.parse(localStorage.getItem("orders"));
 if (storedOrders == null) {
-    localStorage.setItem('orders', JSON.stringify([]))
+    localStorage.setItem('orders', JSON.stringify([]));
 }
 
 storedOrders = JSON.parse(localStorage.getItem("orders"));
@@ -75,7 +75,7 @@ storedOrders = JSON.parse(localStorage.getItem("orders"));
 let pastOrders = document.getElementById("pastOrders");
 if (storedOrders.length != []) {
     storedOrders.forEach(pastOrder => {
-        pastOrders.innerHTML += `<li><strong>Order #${storedOrders.indexOf(pastOrder) + 1} (${pastOrder[0][3][0]})</strong> <button id="pastOrderButton${storedOrders.indexOf(pastOrder)}" class="buttonDefault">View Order</button></li>`
+        pastOrders.innerHTML += `<li><strong>Order #${storedOrders.indexOf(pastOrder) + 1} (${pastOrder[0][3][0]})</strong> <button id="pastOrderButton${storedOrders.indexOf(pastOrder)}" class="buttonDefault">View Order</button></li>`;
     });
     storedOrders.forEach(pastOrder => {
         // Show the order details if the operator chooses to view.
@@ -130,7 +130,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     // Check if the amount is not greater than 10 and greater than 0
     if (coffeeAmount.value > MAXIMUMCOFFEES || coffeeAmount.value < 1 || coffeeAmount.value % 1 != 0) {
         let errorText = document.getElementById(coffeeAmount.id + "Error");
-        errorText.innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>` + 'Please enter a number from 1-10.'
+        errorText.innerHTML = `<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>` + 'Please enter a number from 1-10.';
         return;
     }
     // Change to coffee selection screen
@@ -155,7 +155,8 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         <option>Medium</option>
         <option>Large</option>
         </select>
-        <button class="buttonDefault" type="button" id="coffee${COFFEES.indexOf(coffee)}">+</button>
+        <button class="buttonDefault" type="button" id="coffee${COFFEES.indexOf(coffee)}"><i class="fa fa-plus" aria-hidden="true"></i>
+        </button>
         </div>`;
     });
     // Add cancel order button to coffee selection screen
@@ -167,7 +168,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     <div id="coffeeOrderContainer">
     <h2>Order Details</h2>
     <table id="customerSelectionOrder"></table>
-    </div>`
+    </div>`;
     generateOrder('customerSelectionOrder');
     // Add Event Listeners to each Coffee button
     for (i = 0; i < COFFEES.length; i++) {
@@ -192,8 +193,8 @@ coffeeSelectionButton.addEventListener("click", function (e) {
     // Customer Order Menu Elements
     let viewOrderButton = document.getElementById("viewOrderButton");
     let addCoffees = document.getElementById("addCoffeesButton");
-    let completeOrderButton = document.getElementById('completeOrderButton')
-    let customerDetailsContainer = document.getElementById("customerDetailsContainer")
+    let completeOrderButton = document.getElementById('completeOrderButton');
+    let customerDetailsContainer = document.getElementById("customerDetailsContainer");
 
     // When operator proceeds to view customer order
     viewOrderButton.addEventListener("click", function (e) {
@@ -224,7 +225,7 @@ coffeeSelectionButton.addEventListener("click", function (e) {
         // Store order in past orders
         let storedOrders = JSON.parse(localStorage.getItem("orders"));
         storedOrders.push(order);
-        localStorage.setItem('orders', JSON.stringify(storedOrders))
+        localStorage.setItem('orders', JSON.stringify(storedOrders));
         location.reload();
     })
 
@@ -300,7 +301,7 @@ function generateOrder(tableId) {
            <option>Regular</option>
            <option>Medium</option>
            <option>Large</option>
-           </select>`
+           </select>`;
         let coffeeSizeOrder = document.getElementById(`coffee${order.indexOf(item)}Size${tableId}`);
         coffeeSizeOrder.value = `${item[1]}`;
         cell = row.insertCell();
@@ -366,7 +367,7 @@ function generatePastOrder(tableId, order) {
            <th>Coffee</th>
            <th>Size</th>
            <th>Cost</th>
-           </tr>`
+           </tr>`;
     // Add each coffee to the order statement
     order.forEach(item => {
         let row = table.insertRow();
@@ -394,6 +395,5 @@ function generatePastOrder(tableId, order) {
     totalCostCell = totalCostRow.insertCell();
     totalCostCell.innerHTML = "<strong>Total</strong>";
     totalCostCell = totalCostRow.insertCell();
-    totalCostCell.innerHTML = `$${calculateCost(order, customerPhone.value != "")}`;
-
+    totalCostCell.innerHTML = `$${calculateCost(order, order[0][3][2] != "")}`;
 }
